@@ -20,12 +20,9 @@ def second(inpath):
     with open(inpath , 'r') as input:
         SIMTIME = 256
         fishs = [int(t) for t in input.read().strip('\n').split(',')]
-        simdata = {}
-        for i in range(0, INITIALAGE+1):
-            simdata[i] = 0
-        for f in fishs:    
-            if f in simdata: 
-                simdata[f] += 1 
+        simdata = [0]*(INITIALAGE+1)
+        for f in fishs:     
+            simdata[f] += 1 
         for _ in range(0, SIMTIME):
             first = simdata[0]
             for t in range(0, RESPAWNRATE):
@@ -34,10 +31,7 @@ def second(inpath):
                 simdata[t-1] += simdata[t]
                 simdata[t] = 0
             simdata[INITIALAGE] = first
-        total = 0
-        for t in simdata.keys():
-            total += simdata[t]
-        return total
+        return sum(simdata)
 
 if __name__ == "__main__":
     input = "./input.dat"
