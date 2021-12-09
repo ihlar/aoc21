@@ -20,51 +20,62 @@ def first(inpath):
                     count += 1
         return count
 
+def find_unique(signals, decoded):
+    for sig in signals:
+        if len(sig) == 7:
+            decoded[8] = sig
+        elif len(sig) == 3:
+            decoded[7] = sig
+        elif len(sig) == 2:
+            decoded[1] = sig
+        elif len(sig) == 4:
+            decoded[4] = sig
+
+def find3(signals, decoded):
+    for sig in signals:
+        if len(sig) == 5:
+            found = True
+            for w in decoded[7]:
+                if w not in sig:
+                    found = False
+            if found:
+                decoded[3] = sig
+                break
+
+def find069(signals, decoded):
+    for sig in signals:
+        if len(sig) == 6: # 0, 6, 9
+            if decoded[6] == []:
+                for w in decoded[1]:
+                    if w not in sig:
+                        decoded[6] = sig
+            if sig != decoded[6] and (decoded[9] == [] or decoded[0] == []):
+                find9 = True
+                for w in decoded[3]:
+                    if w not in sig:
+                        find9 = False
+                decoded[9 if find9 else 0] = sig
+
+def find52(signals, decoded):
+    for sig in signals:
+        if len(sig) == 5 and sig != decoded[3]: # 2,5
+            find5 = True
+            for w in sig:
+                if w not in decoded[9]:
+                    find5 = False
+            decoded[5 if find5 else 2] = sig
+
 def second(inpath):
     with open(inpath, 'r') as indata:
         notes = parseinput(indata.readlines())
         sum = 0
         for signals, digs in notes:
-            tmpdigs=[[]]*10
-            for sig in signals:
-                if len(sig) == 7:
-                    tmpdigs[8] = sig
-                elif len(sig) == 3:
-                    tmpdigs[7] = sig
-                elif len(sig) == 2:
-                    tmpdigs[1] = sig
-                elif len(sig) == 4:
-                    tmpdigs[4] = sig
-            while [] in tmpdigs:
-                for sig in signals:
-                    if len(sig) == 5: # 2,3, 5
-                        if tmpdigs[3] == []:
-                            find3 = True
-                            for w in tmpdigs[7]:
-                                if w not in sig:
-                                    find3 = False
-                            if find3:
-                                tmpdigs[3] = sig
-                        elif tmpdigs[9] != [] and sig != tmpdigs[3]:
-                            find5 = True
-                            for w in sig:
-                                if w not in tmpdigs[9]:
-                                    find5 = False
-                            tmpdigs[5 if find5 else 2] = sig
-                    if len(sig) == 6: #6, 0, 9
-                        if tmpdigs[6] == []:
-                            for w in tmpdigs[1]:
-                                if w not in sig:
-                                    tmpdigs[6] = sig
-                        elif sig != tmpdigs[6] and (tmpdigs[9] == [] or tmpdigs[0] == []):
-                            find9 = True
-                            for w in tmpdigs[3]:
-                                if w not in sig:
-                                    find9 = False
-                            tmpdigs[9 if find9 else 0] = sig
-            val = 0
-            val = tmpdigs.index(digs[0])*1000 + tmpdigs.index(digs[1]) * 100 + tmpdigs.index(digs[2]) * 10 + tmpdigs.index(digs[3])
-            sum += val    
+            decoded=[[]]*10
+            find_unique(signals, decoded)
+            find3(signals, decoded)
+            find069(signals, decoded)
+            find52(signals, decoded)                    
+            sum += decoded.index(digs[0])*1000 + decoded.index(digs[1]) * 100 + decoded.index(digs[2]) * 10 + decoded.index(digs[3])
         return sum
 
 if __name__ == "__main__":
