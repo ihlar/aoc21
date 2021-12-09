@@ -1,3 +1,5 @@
+from functools import reduce
+
 VISITED = -1
 PEAK = 9
 
@@ -29,6 +31,18 @@ def getbasin(x, y, grid):
         count += getbasin(x,y-1, grid) 
     return count
 
+def sorted_insert(val, sorted):
+    if val <= sorted[0]:
+        return
+    sorted[0] = val
+    for i in range(1, len(sorted)):
+        v = sorted[i]
+        if v < sorted[i-1]:
+            sorted[i] = sorted[i-1]
+            sorted[i-1] = v
+        else:
+            return
+            
 def first(inpath):
     with open(inpath, 'r') as indata:
         grid = parseinput(indata)
@@ -38,7 +52,7 @@ def first(inpath):
                 if ismin(val, x, y, grid):
                     sum += val+1
         return sum
-                
+
 def second(inpath):
     with open(inpath, 'r') as indata:
         grid = parseinput(indata)
@@ -47,11 +61,8 @@ def second(inpath):
             for x, val in enumerate(line):
                 if ismin(val, x, y, grid):
                     basin = getbasin(x, y, grid)
-                    if basin > basins[0]:
-                        basins[0] = basin
-                        basins.sort()
-        print(basins)
-        return basins[0]*basins[1]*basins[2]
+                    sorted_insert(basin, basins)
+        return reduce(lambda a,b: a*b, basins, 1)
 
 if __name__ == "__main__":
     input = "./input.dat"
