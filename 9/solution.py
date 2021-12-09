@@ -1,3 +1,6 @@
+VISITED = -1
+PEAK = 9
+
 def parseinput(indata):
     return [[int(c) for c in l.strip()] for l in indata.readlines()]
 
@@ -10,25 +13,21 @@ def ismin(val, x, y, grid):
         (x == len(line)-1 or line[x+1] > val)
     )
 
-def gb(x,y,grid):
-    line = grid[y]
-    count = 0  
-    if grid[y][x] == 9 or grid[y][x] == -1:
-        return 0
-    grid[y][x] = -1
-    count = 1
-    if x < len(line) - 1:
-        count += gb(x+1,y, grid) 
-    if x > 0:
-        count += gb(x-1,y, grid) 
-    if y < len(grid) - 1:
-        count += gb(x,y+1, grid) 
-    if y > 0:
-        count += gb(x,y-1, grid) 
-    return count
-        
 def getbasin(x, y, grid):
-    return gb(x,y,grid)
+    line = grid[y]
+    count = 1
+    if grid[y][x] == PEAK or grid[y][x] == VISITED:
+        return 0
+    grid[y][x] = VISITED
+    if x < len(line) - 1:
+        count += getbasin(x+1,y, grid) 
+    if x > 0:
+        count += getbasin(x-1,y, grid) 
+    if y < len(grid) - 1:
+        count += getbasin(x,y+1, grid) 
+    if y > 0:
+        count += getbasin(x,y-1, grid) 
+    return count
 
 def first(inpath):
     with open(inpath, 'r') as indata:
