@@ -30,10 +30,9 @@ def first(inpath):
             for c in line:
                 if c in SYNTAX:
                     expected.append(c)
-                else:
-                    o = expected.pop()
-                    if c != SYNTAX[o]:
-                        score += CORRUPTED[c] 
+                elif c != SYNTAX[expected.pop()]:
+                    score += CORRUPTED[c]
+                    break
         return score
 
 def second(inpath):
@@ -55,9 +54,7 @@ def second(inpath):
                     score *= 5
                     score += COMPLETE[SYNTAX[start]]
                 completed.append(score)
-                completed.sort()
-        print(len(completed))
-        return completed[len(completed)//2]
+        return sorted(completed)[len(completed)//2]
 
 if __name__ == "__main__":
     input = "./input.dat"
