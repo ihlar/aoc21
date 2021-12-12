@@ -34,13 +34,14 @@ def fp2(start, path, pair_in_path, graph):
         return 1
     if start == START and len(path) > 0:
         return 0
-    p = path.copy()
+    p = path
     if start.islower():
         if start in path:
             if pair_in_path:
                 return 0 
             else:
                 pair_in_path = True
+        p = path.copy()
         p.append(start)
     npaths = 0
     for edge in graph[start]:
