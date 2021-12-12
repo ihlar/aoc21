@@ -17,13 +17,13 @@ def build_graph(lines):
     return graph
 
 def find_paths(start, path, graph):
-    p = path.copy()
     if start == END:
         return 1 
-    elif start.islower():
+    p = path
+    if start.islower():
         if start in path:
             return 0
-        p.append(start)
+        p = path + (start,)
     npaths = 0
     for edge in graph[start]:
         npaths += find_paths(edge, p, graph)
@@ -41,8 +41,7 @@ def fp2(start, path, pair_in_path, graph):
                 return 0 
             else:
                 pair_in_path = True
-        p = path.copy()
-        p.append(start)
+        p = path + (start,)
     npaths = 0
     for edge in graph[start]:
         npaths += fp2(edge, p, pair_in_path, graph)
@@ -51,12 +50,12 @@ def fp2(start, path, pair_in_path, graph):
 def first(inpath):
     with open(inpath, 'r') as indata:
         graph = build_graph(indata.readlines())
-        return find_paths('start', [], graph)
+        return find_paths('start', (), graph)
 
 def second(inpath):
     with open(inpath, 'r') as indata:
         graph = build_graph(indata.readlines())
-        return fp2('start', [], False, graph)
+        return fp2('start', (), False, graph)
 
 if __name__ == "__main__":
     input = "./input.dat"
