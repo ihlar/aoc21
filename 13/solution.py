@@ -10,7 +10,6 @@ def parseinput(indata):
             axis, value = line.strip('\n').split("fold along ")[-1].split('=')
             folds.append((axis, int(value)))
         elif line != '\n':
-            # print(line)
             x, y = line.strip('\n').split(',')
             x = int(x)
             y = int(y)
@@ -27,18 +26,18 @@ def parseinput(indata):
 def foldgrid(lx, ly, axis, fold, grid):
     if axis == 'y':
         for y in range(ly-fold, ly):
-            fy = fold - (y-fold)
             for x in range(lx):
                 e = grid[y][x]
                 if e == "#":
+                    fy = fold - (y-fold)
                     grid[fy][x] = e
         ly = fold 
     else:
         for y in range(ly):
             for x in range(lx - fold, lx):
-                fx = fold - (x-fold)
                 e = grid[y][x]
                 if e == "#":
+                    fx = fold - (x-fold)
                     grid[y][fx] = e
         lx = fold
     return (lx, ly)
@@ -57,9 +56,9 @@ def first(inpath):
                         if grid[y][x] == '#':
                             count += 1
         for y in range(ly):
-                for x in range(lx):
-                    print(grid[y][x], end="")
-                print("")
+            for x in range(lx):
+                print(grid[y][x], end="")
+            print("")
         return count
 
 def second(inpath):
