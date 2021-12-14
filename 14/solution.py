@@ -21,17 +21,16 @@ def parseinput(indata):
 
 def build_polymer(iterations, rules, pairs, chars):
     for _ in range(iterations):
-        pairs_copy = pairs.copy()
+        newpairs = defaultdict(zero)
         for pair in pairs:
             n = pairs[pair]
-            pairs_copy[pair] -= n
             c = rules[pair]
             newpair1 = pair[0]+c
             newpair2 = c+pair[1]
             for newpair in [newpair1, newpair2]:
-                pairs_copy[newpair] += n
+                newpairs[newpair] += n
             chars[c] += n
-        pairs = pairs_copy
+        pairs = newpairs
     l = list(chars.values())
     l.sort()
     return l[-1] - l[0]
