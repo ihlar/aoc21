@@ -5,7 +5,7 @@ def zero():
     return 0
 
 def parseinput(indata):
-    grid = [] #[[None] * len(indata[0].strip('\n'))] * len(indata)
+    grid = [] 
     leny = len(indata)
     lenx = len(indata[0].strip('\n'))
     for y, line in enumerate(indata):
