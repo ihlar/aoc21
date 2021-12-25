@@ -5,8 +5,6 @@ def shoot(xvel, yvel, left, right, bottom, top):
     hit = False
     maxy = 0
     while x <= right and y >= bottom:
-        if xvel == 0 and x < left:
-            break
         x += xvel
         y += yvel
         if bottom <= y <= top and left <= x <= right:
