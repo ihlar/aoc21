@@ -21,12 +21,12 @@ def alignments(vec):
             v = vec
         v1 = y_rotate(v)
         while v1 != v:
-            v2 = z_rotate(v1)
-            while v2 != v1:
-                als.append(v2)
-                v2 = z_rotate(v2)
             als.append(v1)
             v1 = y_rotate(v1)
+        v2 = z_rotate(v1)
+        while v2 != v:
+            als.append(v2)
+            v2 = z_rotate(v2)
         als.append(v)
         v = x_rotate(v)
     return als
