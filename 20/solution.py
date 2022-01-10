@@ -13,7 +13,6 @@ def enhance(image, enhancement, oob):
                     else:
                         num += '0' if oob == '.' else '1'
             r += enhancement[int(num, 2)]
-    print(len(image), len(out))
     return out, enhancement[0 if oob == '.' else -1]
 
 def n_lit(img):
